@@ -15,6 +15,6 @@ class Logout
 
         $request->session()->regenerateToken();
 
-        return response()->noContent();
+        return response('Logged out');
     }
 }

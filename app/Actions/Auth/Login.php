@@ -12,6 +12,6 @@ class Login
 
         $request->session()->regenerate();
 
-        return response('Authenticated.');
+        return response('Authenticated');
     }
 }
