@@ -6,32 +6,27 @@ use Illuminate\Contracts\Auth\Authenticatable;
 use function Pest\Faker\faker;
 use function Pest\Laravel\actingAs;
 use function Pest\Laravel\assertAuthenticated;
+use function Pest\Laravel\assertDatabaseHas;
+use function Pest\Laravel\assertGuest;
 use function Pest\Laravel\post;
 
 test('user can register', function () {
     $response = post('register', [
         'name' => faker()->name(),
-        'email' => faker()->unique()->email(),
+        'email' => $email = faker()->unique()->email(),
         'password' => '12345678',
         'password_confirmation' => '12345678'
     ]);
 
     $response->assertCreated();
-});
 
-test('cannot register if wrong password confirmation', function () {
-    $response = post('register', [
-        'name' => faker()->name(),
-        'email' => faker()->unique()->email(),
-        'password' => '12345678',
-        'password_confirmation' => '87654321'
-    ]);
-
-    $response->assertInvalid();
+    assertDatabaseHas('users', ['email' => $email]);
 });
 
 test('user can login', function () {
     $user = User::factory()->create();
+
+    assertGuest();
 
     $response = post('login', [
         'email' => $user->email,
@@ -39,6 +34,7 @@ test('user can login', function () {
     ]);
 
     $response->assertSee('Authenticated');
+
     assertAuthenticated();
 });
 
@@ -48,7 +44,11 @@ test('user can logout', function () {
 
     actingAs($user);
 
+    assertAuthenticated();
+
     $response = post('logout');
     $response->assertSee('Logged out');
     $response->assertOk();
+
+    assertGuest();
 });
