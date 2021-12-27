@@ -12,6 +12,9 @@ class User extends Authenticatable
 {
     use HasApiTokens, HasFactory, Notifiable;
 
+    const REGULAR_USER = 1;
+    const SHOPKEEPER_USER = 2;
+
     protected $guarded = ['id'];
 
     protected $hidden = [

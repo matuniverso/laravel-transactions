@@ -16,6 +16,7 @@ class UserFactory extends Factory
     {
         return [
             'name' => $this->faker->name(),
+            'document_id' => $this->faker->unique()->cpf(),
             'email' => $this->faker->unique()->safeEmail(),
             'password' => '12345678',
             'remember_token' => Str::random(10),
