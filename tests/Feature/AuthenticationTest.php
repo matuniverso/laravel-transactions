@@ -13,6 +13,7 @@ use function Pest\Laravel\post;
 test('user can register', function () {
     $response = post('register', [
         'name' => faker()->name(),
+        'document_id' => $cpf = faker('pt_BR')->unique()->cpf(),
         'email' => $email = faker()->unique()->email(),
         'password' => '12345678',
         'password_confirmation' => '12345678'
@@ -20,7 +21,10 @@ test('user can register', function () {
 
     $response->assertCreated();
 
-    assertDatabaseHas('users', ['email' => $email]);
+    assertDatabaseHas('users', [
+        'document_id' => $cpf,
+        'email' => $email
+    ]);
 });
 
 test('user can login', function () {

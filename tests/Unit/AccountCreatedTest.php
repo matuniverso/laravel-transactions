@@ -9,6 +9,7 @@ use function Pest\Laravel\post;
 test('an account is created after register', function () {
     post('register', [
         'name' => faker()->name(),
+        'document_id' => faker('pt_BR')->unique()->cpf(),
         'email' => $email = faker()->unique()->email(),
         'password' => '12345678',
         'password_confirmation' => '12345678'
