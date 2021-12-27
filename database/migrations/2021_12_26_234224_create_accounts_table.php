@@ -18,8 +18,7 @@ class CreateAccountsTable extends Migration
             $table->uuid('id')->primary();
 
             $table->foreignIdFor(User::class)
-                ->constrained()
-                ->cascadeOnDelete();
+                ->constrained();
 
             $table->integer('balance')->default(0);
         });

@@ -10,7 +10,7 @@ class Account extends Model
 {
     use HasFactory;
 
-    protected $guarded = ['id'];
+    protected $guarded = [];
 
     public $timestamps = false;
 
