@@ -15,7 +15,7 @@ class CreateTransactionsTable extends Migration
     {
         Schema::create('transactions', function (Blueprint $table) {
             $table->uuid('id')->primary();
-            $table->integer('amount');
+            $table->unsignedInteger('amount');
 
             $table->foreignUuid('payer_id')
                 ->references('id')
