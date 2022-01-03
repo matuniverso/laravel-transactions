@@ -31,4 +31,14 @@ class User extends Authenticatable
     {
         return $this->hasOne(Account::class);
     }
+
+    public function transactions()
+    {
+        return $this->hasManyThrough(
+            Transaction::class,
+            Account::class,
+            'user_id',
+            ['payer_id', 'receiver_id']
+        );
+    }
 }
