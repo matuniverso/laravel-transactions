@@ -20,7 +20,7 @@ class CreateAccountsTable extends Migration
             $table->foreignIdFor(User::class)
                 ->constrained();
 
-            $table->integer('balance')->default(0);
+            $table->unsignedInteger('balance')->default(0);
         });
     }
 
