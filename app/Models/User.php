@@ -39,4 +39,14 @@ class User extends Authenticatable
     {
         return $this->hasOne(Account::class);
     }
+
+    public function balance(): int
+    {
+        return $this->account->balance;
+    }
+
+    public function setBalance(int $amount): void
+    {
+        $this->account->update(['balance' => $amount]);
+    }
 }
