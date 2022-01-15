@@ -8,6 +8,8 @@ use Illuminate\Foundation\Http\FormRequest;
 
 class StoreTransactionRequest extends FormRequest
 {
+    protected $stopOnFirstFailure = true;
+
     public function authorize()
     {
         return true;
@@ -16,7 +18,6 @@ class StoreTransactionRequest extends FormRequest
     public function rules()
     {
         return [
-            'amount' => ['required', 'bail', 'integer', 'min:1', new Enough],
             'payer_id' => [
                 'bail',
                 'required',
@@ -24,7 +25,8 @@ class StoreTransactionRequest extends FormRequest
                 'different:receiver_id',
                 new NotShopkeeper
             ],
-            'receiver_id' => ['required', 'bail', 'exists:users,id']
+            'receiver_id' => ['bail', 'required', 'exists:users,id'],
+            'amount' => ['bail', 'required', 'integer', 'min:1', new Enough],
         ];
     }
 }
