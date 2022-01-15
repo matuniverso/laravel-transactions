@@ -14,5 +14,6 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/account', AccountController::class);
 });
 
-Route::post('/transaction', TransactionController::class);
+Route::post('/transaction', [TransactionController::class, 'store']);
+Route::get('/list-transactions', [TransactionController::class, 'index']);
 Route::post('/add-balance', AddBalanceController::class);

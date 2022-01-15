@@ -7,6 +7,7 @@ use App\Http\Requests\StoreTransactionRequest;
 use App\Http\Resources\TransactionResource;
 use App\Repositories\TransactionRepository;
 use Illuminate\Http\Response;
+use App\Models\Transaction;
 
 class TransactionController extends Controller
 {
@@ -15,7 +16,18 @@ class TransactionController extends Controller
     ) {
     }
 
-    public function __invoke(StoreTransactionRequest $request)
+    public function index()
+    {
+        $transactions = Transaction::query()
+            ->latest()
+            ->get();
+
+        return response()->json(
+            TransactionResource::collection($transactions)
+        );
+    }
+
+    public function store(StoreTransactionRequest $request)
     {
         try {
             $transaction = $this->repository->handleTransactionStore($request);
