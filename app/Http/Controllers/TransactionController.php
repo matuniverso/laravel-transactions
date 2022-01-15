@@ -2,63 +2,34 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Transaction;
-use Illuminate\Http\Request;
+use App\Exceptions\AuthorizeServiceException;
+use App\Http\Requests\StoreTransactionRequest;
+use App\Repositories\TransactionRepository;
+use Illuminate\Http\Response;
 
 class TransactionController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
-    {
-        //
+    public function __construct(
+        private TransactionRepository $repository
+    ) {
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
+    public function __invoke(StoreTransactionRequest $request)
     {
-        //
-    }
+        try {
+            $transaction = $this->repository->handleTransactionStore($request);
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\Transaction  $transaction
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Transaction $transaction)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Transaction  $transaction
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, Transaction $transaction)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\Transaction  $transaction
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(Transaction $transaction)
-    {
-        //
+            return response()->json($transaction, Response::HTTP_CREATED);
+        } catch (AuthorizeServiceException $serviceException) {
+            return response(
+                $serviceException->getMessage(),
+                Response::HTTP_UNAUTHORIZED
+            );
+        } catch (\Exception) {
+            return response(
+                'Something went wrong',
+                Response::HTTP_INTERNAL_SERVER_ERROR
+            );
+        }
     }
 }
