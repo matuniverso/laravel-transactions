@@ -17,7 +17,7 @@ class TransactionResource extends JsonResource
             'receiver' => new AccountResource(
                 User::find($this->receiver_id)
             ),
-            'date' => $this->created_at->format('d-m-Y')
+            'created_at' => $this->created_at->format('d-M-Y')
         ];
     }
 }
