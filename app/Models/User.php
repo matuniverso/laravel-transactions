@@ -27,18 +27,16 @@ class User extends Authenticatable
         $this->attributes['password'] = bcrypt($password);
     }
 
+    public function getTypeAttribute(): string
+    {
+        return match ($this->attributes['type']) {
+            self::REGULAR_USER => 'Normal',
+            self::SHOPKEEPER_USER => 'Shopkeeper'
+        };
+    }
+
     public function account(): HasOne
     {
         return $this->hasOne(Account::class);
-    }
-
-    public function transactions()
-    {
-        return $this->hasManyThrough(
-            Transaction::class,
-            Account::class,
-            'user_id',
-            ['payer_id', 'receiver_id']
-        );
     }
 }
