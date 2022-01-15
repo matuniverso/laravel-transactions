@@ -16,10 +16,8 @@ class CreateAccountsTable extends Migration
     {
         Schema::create('accounts', function (Blueprint $table) {
             $table->uuid('id')->primary();
-
             $table->foreignIdFor(User::class)
                 ->constrained();
-
             $table->unsignedInteger('balance')->default(0);
         });
     }
