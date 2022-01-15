@@ -45,8 +45,8 @@ class User extends Authenticatable
         return $this->account->balance;
     }
 
-    public function setBalance(int $amount): void
+    public function setBalance(int $amount): bool
     {
-        $this->account->update(['balance' => $amount]);
+        return $this->account->update(['balance' => $amount]);
     }
 }
