@@ -9,7 +9,9 @@ class NotShopkeeper implements Rule
 {
     public function passes($attribute, $value)
     {
-        return $value !== User::SHOPKEEPER_USER;
+        $user = User::find($value);
+
+        return $user->type !== User::SHOPKEEPER_USER;
     }
 
     public function message()
