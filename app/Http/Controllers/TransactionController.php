@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Exceptions\AuthorizeServiceException;
 use App\Http\Requests\StoreTransactionRequest;
+use App\Http\Resources\TransactionResource;
 use App\Repositories\TransactionRepository;
 use Illuminate\Http\Response;
 
@@ -19,7 +20,10 @@ class TransactionController extends Controller
         try {
             $transaction = $this->repository->handleTransactionStore($request);
 
-            return response()->json($transaction, Response::HTTP_CREATED);
+            return response()->json(
+                new TransactionResource($transaction),
+                Response::HTTP_CREATED
+            );
         } catch (AuthorizeServiceException $serviceException) {
             return response(
                 $serviceException->getMessage(),
