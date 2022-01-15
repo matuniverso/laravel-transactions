@@ -15,7 +15,7 @@ class AddBalanceController extends Controller
         /** @var User $user */
         $user = User::find($request->user_id);
 
-        $user->setBalance($request->amount);
+        $user->setBalance($user->balance() + $request->amount);
 
         return response()->json(new AccountResource($user));
     }
