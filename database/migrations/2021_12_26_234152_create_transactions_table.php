@@ -17,13 +17,13 @@ class CreateTransactionsTable extends Migration
             $table->uuid('id')->primary();
             $table->unsignedInteger('amount');
 
-            $table->foreignUuid('payer_id')
+            $table->foreignId('payer_id')
                 ->references('id')
-                ->on('accounts');
+                ->on('users');
 
-            $table->foreignUuid('receiver_id')
+            $table->foreignId('receiver_id')
                 ->references('id')
-                ->on('accounts');
+                ->on('users');
 
             $table->timestamps();
         });
