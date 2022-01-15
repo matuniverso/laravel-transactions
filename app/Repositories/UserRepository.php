@@ -8,15 +8,11 @@ final class UserRepository
 {
     public function addMoney(User $user, int $amount): bool
     {
-        return $user->account->update([
-            'balance' => $user->balance + $amount
-        ]);
+        return $user->setBalance($user->balance() + $amount);
     }
 
     public function removeMoney(User $user, int $amount): bool
     {
-        return $user->account->update([
-            'balance' => $user->balance - $amount
-        ]);
+        return $user->setBalance($user->balance() - $amount);
     }
 }
