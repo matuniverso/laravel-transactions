@@ -10,10 +10,9 @@ class AccountResource extends JsonResource
     public function toArray($request)
     {
         return [
-            'user_type' => match ($this->type) {
-                User::SHOPKEEPER_USER => 'Shopkeeper',
-                default => 'Regular User'
-            },
+            'id' => $this->id,
+            'name' => $this->name,
+            'user_type' => $this->type,
             'balance' => $this->account->balance
         ];
     }
