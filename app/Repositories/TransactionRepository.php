@@ -2,6 +2,7 @@
 
 namespace App\Repositories;
 
+use App\Events\TransactionCreated;
 use App\Exceptions\AuthorizeServiceException;
 use App\Http\Requests\StoreTransactionRequest;
 use App\Models\Transaction;
@@ -26,12 +27,12 @@ final class TransactionRepository
             throw new AuthorizeServiceException('Not authorized.');
 
         $data = $request->validated();
-        $payer = User::find($request->payer_id);
         $receiver = User::find($request->receiver_id);
+        $payer = User::find($request->payer_id);
 
         $transaction = $this->applyTransaction($data, $payer, $receiver);
 
-        // $this->sendNotification();
+        event(new TransactionCreated);
 
         return $transaction;
     }
@@ -63,12 +64,5 @@ final class TransactionRepository
         $response = $this->paymentAuthorizeService->verify();
 
         return $response['message'] === 'Autorizado';
-    }
-
-    public function sendNotification(): bool
-    {
-        $response = $this->paymentNotifyService->send();
-
-        return $response['message'] === 'Success';
     }
 }
