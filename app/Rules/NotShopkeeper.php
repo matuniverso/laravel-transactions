@@ -11,7 +11,7 @@ class NotShopkeeper implements Rule
     {
         $user = User::find($value);
 
-        return $user->type !== User::SHOPKEEPER_USER;
+        return $user->type !== 'Shopkeeper';
     }
 
     public function message()
