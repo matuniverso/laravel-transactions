@@ -2,6 +2,7 @@
 
 namespace App\Repositories;
 
+use Exception;
 use App\Events\TransactionCreated;
 use App\Exceptions\AuthorizeServiceException;
 use App\Http\Requests\StoreTransactionRequest;
@@ -23,8 +24,9 @@ final class TransactionRepository
 
     public function handleTransactionStore(StoreTransactionRequest $request)
     {
-        if (!$this->verifyAuthorization())
+        if (!$this->verifyAuthorization()) {
             throw new AuthorizeServiceException('Not authorized.');
+        }
 
         $data = $request->validated();
         $receiver = User::find($request->receiver_id);
@@ -49,7 +51,7 @@ final class TransactionRepository
             DB::commit();
 
             return $transaction;
-        } catch (\Exception) {
+        } catch (Exception) {
             DB::rollBack();
 
             return response(
